@@ -1,8 +1,8 @@
 export class History {
-    #mementos;
+
 
     constructor() {
-        this.#mementos = [];
+        this.mementos = [];
     }
 
     getUndo() {
