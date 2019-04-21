@@ -1,3 +1,3 @@
 # mementoJS
-Design Pattern
-MEMENTO Design Pattern with JS AND MATERIALIZE CSS 
+`Design Pattern MEMENTO` \
+with JS AND MATERIALIZE CSS 
