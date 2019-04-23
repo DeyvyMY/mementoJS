@@ -1,20 +1,9 @@
-import {History} from "./History";
 
-export class Memento {
-
+class Memento {
 
     constructor(state) {
         this._state = state;
     }
-    /*
-    restore(){
-
-    }
-
-    public void restore() {
-        editor.restore(backup);
-    }
-    */
 
     get state() {
         return this._state;
@@ -25,4 +14,5 @@ export class Memento {
     }
 }
 
+export {Memento};
 

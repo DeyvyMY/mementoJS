@@ -12,7 +12,8 @@ export class History {
     }
 
     push(memento) {
-        this.mementos.add(memento);
+
+        this.mementos.push(memento);
     }
 
     hasUndo() {
@@ -38,13 +39,13 @@ export class History {
         }
         return null;
     }
-
     getRedo() {
         //  ->
         if (this.iterator.hasNext()) {
             this.iterator.next();
             return this.iterator.currentItem();
         }
+        return null;
     }
 
 

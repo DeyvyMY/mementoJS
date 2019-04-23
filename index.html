@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Memento</title>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -21,13 +20,8 @@
             left:50%;
         }
     </style>
-    <script>
-        function actualizarColor(){
-            document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
-            
-        }
-    </script>
-    <script src="script.js"></script>
+
+
 </head>
 <body>
     
@@ -71,9 +65,22 @@
                     
                 </div>
     </div>             
-    
+
     <!-- Materialize JavaScript CDN-->
+
+
+
+    <script type="application/javascript">
+        function actualizarColor(){
+            document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
+
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="/script.js"></script>
+    <script src="src/Models/History/History.js" type="module"></script>
+    <script src="src/Models/History/Memento.js" type="application/javascript"></script>
+    <script src="src/Models/History/Originator.js" type="application/javascript"></script>
+
+    <script src="src/index.js" type="application/javascript" ></script>
 </body>
 </html>
