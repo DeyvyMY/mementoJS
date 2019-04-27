@@ -90,9 +90,13 @@
 
 
     <script type="application/javascript">
+        var listColor= Array("#000000","#0000FF","#FF0000","#00FF00","#FFF000","#800080","#8B0000","#FFC0CB","#FFA07A", "#BDB76B","#4B0082","#228B22","#00FFFF","#FFF8DC");
+        
         function actualizarColor(){
+            var randIndex = Math.floor(Math.random() * ( listColor.length - 0)) + 0;
+            document.getElementById("hexadecimal_code").value = listColor[randIndex];
             document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
-
+        
         }
 
         function guardar(){
