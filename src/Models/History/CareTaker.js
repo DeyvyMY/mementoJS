@@ -3,7 +3,7 @@ import {Iterator} from "../Iterator/Iterator";
 /**
  * this is a careTaker
  */
-export class History {
+export class CareTaker {
 
 
     constructor() {
@@ -11,9 +11,9 @@ export class History {
         this.iterator = new Iterator(this.mementos);
     }
 
-    push(memento) {
-
+    addMemento(memento) {
         this.mementos.push(memento);
+        this.iterator.next();
     }
 
     hasUndo() {

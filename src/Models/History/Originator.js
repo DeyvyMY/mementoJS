@@ -3,14 +3,14 @@ import {Memento} from "./Memento";
 class Originator {
 
 
-    constructor(state) {
-        this.state = state;
+    constructor() {
+
     }
 
-    setMemento(memento) {
-        //alert("FFF");
-        //Object.assign(memento.state, this.state);
-        memento.state={...this.state}
+    setMemento(objectX,memento) {
+        let c =memento.state;
+        Object.assign(objectX,c);
+
     }
 
     createMemento(objectX) {
@@ -20,13 +20,18 @@ class Originator {
         return new Memento(thisCloned);
 
     }
-    /*copiar(a,b){
-        Object.assign(a, bs);
+    saveState(object,careTaker){
+        let memento=this.createMemento(object);
+        careTaker.addMemento(memento);
     }
-    copyState(target, source) {
-        Object.assign(target, source);
-        return 0;
-    }*/
+    undo(objectX,careTaker){
+        let mementoUndo=careTaker.getUndo();
+        this.setMemento(objectX,mementoUndo);
+    }
+    redo(objectX,careTaker){
+        let mementoRedo=careTaker.getRedo();
+        this.setMemento(objectX,mementoRedo);
+    }
 
 
 }

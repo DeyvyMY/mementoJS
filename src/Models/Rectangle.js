@@ -5,12 +5,12 @@ export  class Rectangle {
 
     }
 
-    get color() {
+    /*get color() {
         return this._color;
     }
 
     set color(value) {
         this._color = value;
-    }
+    }*/
 
 }
