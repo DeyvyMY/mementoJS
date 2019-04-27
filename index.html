@@ -95,7 +95,7 @@
         function actualizarColor(){
             var randIndex = Math.floor(Math.random() * ( listColor.length - 0)) + 0;
             document.getElementById("hexadecimal_code").value = listColor[randIndex];
-            
+            document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
         
         }
 
@@ -106,7 +106,6 @@
             li.setAttribute("class", "collection-item");
             li.style.backgroundColor = document.getElementById("hexadecimal_code").value;
             ul.appendChild(li);
-            document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
