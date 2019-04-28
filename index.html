@@ -68,8 +68,8 @@
                                         </div>
                                     </div>
                                     <div class="row right-align">
-                                        <a class="btn tooltipped waves-effect waves-light"><i class="material-icons">undo</i></a>
-                                        <a class="btn tooltipped waves-effect waves-light"><i class="material-icons">redo</i></a>
+                                        <a class="btn tooltipped waves-effect waves-light" id="undoId" onclick="undo()"><i class="material-icons">undo</i></a>
+                                        <a class="btn tooltipped waves-effect waves-light" id="redoId" onclick="redo()"><i class="material-icons">redo</i></a>
                                         <a class="btn tooltipped waves-effect waves-light" onclick="guardar();"><i class="material-icons">save</i></a>
                                         
                                     </div>
@@ -85,34 +85,213 @@
             </div>
     </div>             
 
-    <!-- Materialize JavaScript CDN-->
+    
 
-
-
-    <script type="application/javascript">
-        var listColor= Array("#000000","#0000FF","#FF0000","#00FF00","#FFF000","#800080","#8B0000","#FFC0CB","#FFA07A", "#BDB76B","#4B0082","#228B22","#00FFFF","#FFF8DC");
+    <script>
+            class Iterator {
         
-        function actualizarColor(){
-            var randIndex = Math.floor(Math.random() * ( listColor.length - 0)) + 0;
-            document.getElementById("hexadecimal_code").value = listColor[randIndex];
-            document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
         
-        }
-
-        function guardar(){
-            var ul = document.getElementById("historyColors");
-            var li = document.createElement("li");
-            li.appendChild(document.createTextNode(" "));
-            li.setAttribute("class", "collection-item");
-            li.style.backgroundColor = document.getElementById("hexadecimal_code").value;
-            ul.appendChild(li);
-        }
-    </script>
+                constructor(list) {
+                    this.list = list;
+                    this.pointer = 0;
+                }
+        
+                hasNext() {
+                    return this.pointer < this.list.length;
+                }
+        
+                next() {
+                    this.pointer++;
+                }
+        
+                currentItem() {
+                    return this.list[this.pointer];
+                }
+        
+                previous() {
+                    this.pointer--;
+                }
+        
+                hasPrevious() {
+                    return this.pointer !== 0;
+                }
+        
+            }
+        
+            class CareTaker {
+                constructor() {
+                    this.mementos = [];
+                    this.iterator = new Iterator(this.mementos);
+                }
+        
+                addMemento(memento) {
+                    this.mementos.push(memento);
+                    this.iterator.next();
+                }
+        
+                hasUndo() {
+                    /*let mementoUndo = this.#getUndo();
+                    if (mementoUndo !=null){
+                        return false;
+                    }
+                    // restore
+                    mementoUndo.restore();
+                    return true;*/
+                    return this.iterator.hasPrevious();
+                }
+        
+                hasRedo() {
+                    return this.iterator.hasNext();
+                }
+        
+                getUndo() {
+                    // <-
+                    if (this.iterator.hasPrevious()) {
+                        this.iterator.previous();
+                        return this.iterator.currentItem()
+                    }
+                    return null;
+                }
+                getRedo() {
+                    //  ->
+                    if (this.iterator.hasNext()) {
+                        this.iterator.next();
+                        return this.iterator.currentItem();
+                    }
+                    return null;
+                }
+            }
+        
+            class Memento {
+        
+                constructor(state) {
+                    this._state = state;
+                }
+        
+                get state() {
+                    return this._state;
+                }
+        
+                set state(value) {
+                    this._state = value;
+                }
+            }
+        
+            class Originator {
+        
+        
+                constructor() {
+                    
+                }
+        
+                setMemento(objectX,memento) {
+                    let c =memento.state;
+                    Object.assign(objectX,c);
+                    
+                }
+        
+                createMemento(objectX) {
+                    let thisCloned = {...objectX};
+                    //let thisCloned = 0;
+                    //Object.assign(objectX, thisCloned);
+                    return new Memento(thisCloned);
+        
+                }
+                saveState(object,careTaker){
+                let memento=this.createMemento(object);
+                careTaker.addMemento(memento);
+                }
+                undo(objectX,careTaker){
+                let mementoUndo=careTaker.getUndo();
+                this.setMemento(objectX,mementoUndo);
+                }
+                redo(objectX,careTaker){
+                let mementoRedo=careTaker.getRedo();
+                this.setMemento(objectX,mementoRedo);
+                }
+                /*copiar(a,b){
+                    Object.assign(a, bs);
+                }
+                copyState(target, source) {
+                    Object.assign(target, source);
+                    return 0;
+                }*/
+        
+        
+            }
+                class Rectangle {
+        
+                constructor() {
+                    this.color = "";
+        
+                }
+        
+                /*get color() {
+                    return this.color;
+                }
+        
+                set color(value) {
+                    this.color = value;
+                }*/
+        
+                }
+                let originator = new Originator();
+                let careTaker = new CareTaker();
+                let c = new Rectangle();
+        
+            </script>
+            <script type="application/javascript">
+                var listColor= Array("#000000","#0000FF","#FF0000","#00FF00","#FFF000","#800080","#8B0000","#FFC0CB","#FFA07A", "#BDB76B","#4B0082","#228B22","#00FFFF","#FFF8DC");
+                
+                function actualizarColor(){
+                    var randIndex = Math.floor(Math.random() * ( listColor.length - 0)) + 0;
+                    document.getElementById("hexadecimal_code").value = listColor[randIndex];
+                    c.color =  document.getElementById("hexadecimal_code").value;
+                    console.log(c);
+                }
+        
+                function guardar(){
+                    var ul = document.getElementById("historyColors");
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(" "));
+                    li.setAttribute("class", "collection-item");
+                    li.style.backgroundColor = document.getElementById("hexadecimal_code").value;
+                    ul.appendChild(li);
+                    document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
+                    originator.saveState(c,careTaker);
+                    console.log(c);
+                }
+        
+                function redo(){
+                    if (!careTaker.hasRedo()){
+                        alert("no hay redo");
+                        //document.getElementById("#redoId").disabled = true;
+                    }
+        
+                    originator.redo(c,careTaker);
+                    document.getElementById("rectanguloColor").style.backgroundColor = c.color;
+                    document.getElementById("hexadecimal_code").value = c.color;
+                    console.log(c);
+        
+                }
+                function undo(){
+                    if (!careTaker.hasUndo()){
+                        alert("no hay Undo");
+                        //document.getElementById("#undoId").disabled = true;
+                    }
+        
+                    originator.undo(c,careTaker);
+                    document.getElementById("rectanguloColor").style.backgroundColor = c.color;
+                    document.getElementById("hexadecimal_code").value = c.color;
+                    console.log(c);
+          
+                }
+            </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="src/Models/History/History.js" type="module"></script>
     <script src="src/Models/History/Memento.js" type="application/javascript"></script>
     <script src="src/Models/History/Originator.js" type="application/javascript"></script>
-
+    <!-- Materialize JavaScript CDN-->
     <script src="src/index.js" type="application/javascript" ></script>
 </body>
 </html>
