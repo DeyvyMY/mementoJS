@@ -235,22 +235,54 @@
                 }*/
         
                 }
-                let originator = new Originator();
-                let careTaker = new CareTaker();
-                let c = new Rectangle();
+                
         
             </script>
             <script type="application/javascript">
-                var listColor= Array("#000000","#0000FF","#FF0000","#00FF00","#FFF000","#800080","#8B0000","#FFC0CB","#FFA07A", "#BDB76B","#4B0082","#228B22","#00FFFF","#FFF8DC");
-                
+
+                let originator = new Originator();
+                let careTaker = new CareTaker();
+                let c = new Rectangle();
+
                 function actualizarColor(){
-                    var randIndex = Math.floor(Math.random() * ( listColor.length - 0)) + 0;
-                    document.getElementById("hexadecimal_code").value = listColor[randIndex];
+                    generarColor();
                     c.color =  document.getElementById("hexadecimal_code").value;
-                    console.log(c);
                 }
         
-                function guardar(){
+                function guardar(){ 
+                    originator.saveState(c,careTaker);
+                    agregarPaleta();  
+                }
+        
+                function redo(){
+                    if (!careTaker.hasRedo()){
+                        alert("No se puede rehacer");
+                        document.getElementById("#redoId").disabled = true;
+                    }
+        
+                    originator.redo(c,careTaker);
+                    actualizarRectangulo();
+                    
+                }
+                function undo(){
+                    if (!careTaker.hasUndo()){
+                        alert("No se puede deshacer");
+                        document.getElementById("#undoId").disabled = true;
+                    }
+        
+                    originator.undo(c,careTaker);
+                    actualizarRectangulo();
+                }
+
+                function generarColor(){
+                    var listColor= Array("#000000","#0000FF","#FF0000","#00FF00","#FFF000","#800080","#8B0000",
+                    "#FFC0CB","#FFA07A", "#BDB76B","#4B0082","#228B22","#00FFFF","#FFF8DC");
+                    
+                    var randIndex = Math.floor(Math.random() * ( listColor.length - 0)) + 0;
+                    document.getElementById("hexadecimal_code").value = listColor[randIndex];
+                }
+
+                function agregarPaleta(){
                     var ul = document.getElementById("historyColors");
                     var li = document.createElement("li");
                     li.appendChild(document.createTextNode(" "));
@@ -258,33 +290,11 @@
                     li.style.backgroundColor = document.getElementById("hexadecimal_code").value;
                     ul.appendChild(li);
                     document.getElementById("rectanguloColor").style.backgroundColor = document.getElementById("hexadecimal_code").value;
-                    originator.saveState(c,careTaker);
-                    console.log(c);
                 }
-        
-                function redo(){
-                    if (!careTaker.hasRedo()){
-                        alert("no hay redo");
-                        //document.getElementById("#redoId").disabled = true;
-                    }
-        
-                    originator.redo(c,careTaker);
+
+                function actualizarRectangulo(){
                     document.getElementById("rectanguloColor").style.backgroundColor = c.color;
                     document.getElementById("hexadecimal_code").value = c.color;
-                    console.log(c);
-        
-                }
-                function undo(){
-                    if (!careTaker.hasUndo()){
-                        alert("no hay Undo");
-                        //document.getElementById("#undoId").disabled = true;
-                    }
-        
-                    originator.undo(c,careTaker);
-                    document.getElementById("rectanguloColor").style.backgroundColor = c.color;
-                    document.getElementById("hexadecimal_code").value = c.color;
-                    console.log(c);
-          
                 }
             </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
